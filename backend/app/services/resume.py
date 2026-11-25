@@ -122,9 +122,12 @@ def draft_profile(text: str, current: Profile | None, today: date | None = None)
     base = current or Profile()
     sections = _sections(text)
     education = sections.get("education", "")
-    locations = list(dict.fromkeys(home_location(text) + [p for p in base.preferred_locations]))
-    if "remote" not in locations:
-        locations.append("remote")
+    if current is not None and not current.preferred_locations:
+        locations: list[str] = []  # "anywhere in the US" stays that way
+    else:
+        locations = list(dict.fromkeys(home_location(text) + list(base.preferred_locations)))
+        if "remote" not in locations:
+            locations.append("remote")
     return {
         "id": base.id,
         "years_experience": years_of_experience(text, today),
@@ -134,4 +137,5 @@ def draft_profile(text: str, current: Profile | None, today: date | None = None)
         "preferred_locations": locations,
         "role_weights": dict(base.role_weights),
         "skills": skill_weights(text),
+        "languages": list(base.languages),
     }

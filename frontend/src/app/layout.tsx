@@ -24,6 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <h1 className="text-lg font-semibold">Job search</h1>
               <nav className="flex gap-4" aria-label="Main">
                 <NavLink href="/">Jobs</NavLink>
+                <NavLink href="/applied">Applied companies</NavLink>
                 <NavLink href="/profile">Profile</NavLink>
               </nav>
               <span className="flex-1" />

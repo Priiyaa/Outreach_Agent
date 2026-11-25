@@ -99,6 +99,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/jobs/{job_id}/label": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Label Match
+         * @description Mark a ranked job a good or bad match for you (or clear it). Labels are used by `python -m app.cli tune`.
+         */
+        put: operations["label_match_api_jobs__job_id__label_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/jobs/bulk-sponsorship": {
         parameters: {
             query?: never;
@@ -155,6 +175,43 @@ export interface paths {
          */
         post: operations["read_resume_api_profile_resume_post"];
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/watched": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Watched
+         * @description Companies you applied to, with their open matching jobs and how many are new this week.
+         */
+        get: operations["list_watched_api_watched_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/watched/{company_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Stop Watching */
+        delete: operations["stop_watching_api_watched__company_key__delete"];
         options?: never;
         head?: never;
         patch?: never;
@@ -246,6 +303,18 @@ export interface components {
              * @default
              */
             match_reasons: string;
+            /**
+             * Watched
+             * @default false
+             */
+            watched: boolean;
+            /**
+             * Yc Batch
+             * @default
+             */
+            yc_batch: string;
+            /** Match Label */
+            match_label?: string | null;
         };
         /** JobEdit */
         JobEdit: {
@@ -276,6 +345,18 @@ export interface components {
             offset: number;
             /** Rows */
             rows: components["schemas"]["Job"][];
+        };
+        /** LabelCounts */
+        LabelCounts: {
+            /** Good */
+            good: number;
+            /** Bad */
+            bad: number;
+        };
+        /** MatchLabel */
+        MatchLabel: {
+            /** Label */
+            label?: ("good" | "bad") | null;
         };
         /** Meta */
         Meta: {
@@ -327,6 +408,12 @@ export interface components {
             skills?: {
                 [key: string]: number;
             };
+            /** Weights */
+            weights?: {
+                [key: string]: number;
+            };
+            /** Languages */
+            languages?: string[];
         };
         /** ProfileSaved */
         ProfileSaved: {
@@ -364,6 +451,21 @@ export interface components {
             input?: unknown;
             /** Context */
             ctx?: Record<string, never>;
+        };
+        /** WatchedCompany */
+        WatchedCompany: {
+            /** Company Key */
+            company_key: string;
+            /** Company */
+            company: string;
+            /** Boards */
+            boards: string[];
+            /** Added At */
+            added_at: string;
+            /** Open Matches */
+            open_matches: number;
+            /** Fresh Matches */
+            fresh_matches: number;
         };
     };
     responses: never;
@@ -462,6 +564,8 @@ export interface operations {
                 since_days?: number;
                 sort?: "newest" | "match";
                 min_score?: number;
+                watched?: boolean;
+                yc?: boolean;
             };
             header?: never;
             path?: never;
@@ -541,6 +645,8 @@ export interface operations {
                 since_days?: number;
                 sort?: "newest" | "match";
                 min_score?: number;
+                watched?: boolean;
+                yc?: boolean;
             };
             header?: never;
             path?: never;
@@ -555,6 +661,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    label_match_api_jobs__job_id__label_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MatchLabel"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LabelCounts"];
                 };
             };
             /** @description Validation Error */
@@ -583,6 +726,8 @@ export interface operations {
                 since_days?: number;
                 sort?: "newest" | "match";
                 min_score?: number;
+                watched?: boolean;
+                yc?: boolean;
             };
             header?: {
                 authorization?: string | null;
@@ -689,6 +834,59 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Profile"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_watched_api_watched_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WatchedCompany"][];
+                };
+            };
+        };
+    };
+    stop_watching_api_watched__company_key__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                company_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Saved"];
                 };
             };
             /** @description Validation Error */

@@ -111,3 +111,38 @@ class ProfileRow(Base):
     id: Mapped[str] = mapped_column(Text, primary_key=True)
     data: Mapped[str] = mapped_column(Text)  # JSON of services.match.Profile
     updated_at: Mapped[str] = mapped_column(Text)
+
+
+class WatchedCompanyRow(Base):
+    """Companies whose boards the fetch keeps checking, added when a job there is marked applied (services.watch).
+    board is "" when the company's career site isn't one the app can read (only its name is kept)."""
+
+    __tablename__ = "watched_companies"
+
+    company_key: Mapped[str] = mapped_column(Text, primary_key=True)
+    source: Mapped[str] = mapped_column(Text, primary_key=True, default="", server_default="")
+    board: Mapped[str] = mapped_column(Text, primary_key=True, default="", server_default="")
+    name: Mapped[str] = mapped_column(Text)
+    reason: Mapped[str] = mapped_column(Text, default="applied", server_default="applied")
+    added_at: Mapped[str] = mapped_column(Text)
+
+
+class CompanyTagRow(Base):
+    """Labels on a company, e.g. tag "yc" with detail "W24" (filled from config/companies.yc.yaml on every fetch)."""
+
+    __tablename__ = "company_tags"
+
+    company_key: Mapped[str] = mapped_column(Text, primary_key=True)
+    tag: Mapped[str] = mapped_column(Text, primary_key=True)
+    detail: Mapped[str] = mapped_column(Text, default="", server_default="")
+
+
+class MatchLabelRow(Base):
+    """Your verdict on a ranked job ("good" or "bad"), used to check and tune the match weights (services.tune)."""
+
+    __tablename__ = "match_labels"
+
+    profile: Mapped[str] = mapped_column(Text, primary_key=True)
+    job_id: Mapped[str] = mapped_column(Text, primary_key=True)
+    label: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[str] = mapped_column(Text)

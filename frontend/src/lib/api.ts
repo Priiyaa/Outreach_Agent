@@ -11,6 +11,7 @@ export type FetchStatus = Schemas["FetchStatus"];
 export type Profile = Schemas["Profile"];
 export type ProfileState = Schemas["ProfileState"];
 export type ProfileSaved = Schemas["ProfileSaved"];
+export type WatchedCompany = Schemas["WatchedCompany"];
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -51,6 +52,11 @@ export const api = {
   startFetch: () => request<FetchStatus>("/api/fetch", { method: "POST" }),
   fetchStatus: () => request<FetchStatus>("/api/fetch"),
   profile: () => request<ProfileState>("/api/profile"),
+  watched: () => request<WatchedCompany[]>("/api/watched"),
+  labelJob: (id: string, label: "good" | "bad" | null) =>
+    request<{ good: number; bad: number }>(`/api/jobs/${encodeURIComponent(id)}/label`, send("PUT", { label })),
+  unwatch: (companyKey: string) =>
+    request<{ saved: number }>(`/api/watched/${encodeURIComponent(companyKey)}`, { method: "DELETE" }),
   /** Sends the PDF's bytes; the server returns a draft profile and keeps nothing. */
   readResume: (file: File) =>
     request<Profile>("/api/profile/resume", { method: "POST", body: file, headers: { "Content-Type": "application/pdf" } }),

@@ -8,7 +8,7 @@ needs_sponsorship: true      # hides jobs that say they won't sponsor, need clea
 has_phd: false               # PhD-required roles are ranked lower when false
 
 # Where you'd most like to work. Anywhere in the US still counts; these just rank a little higher.
-preferred_locations: [chicago, illinois, ", il", remote]
+preferred_locations: []  # empty = anywhere in the US; or e.g. [chicago, ", il", remote]
 
 # How much you want each kind of role (0 to 1). Families are matched from the job title.
 role_weights:

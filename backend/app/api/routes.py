@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Dict
+from typing import Dict, List
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from fastapi.responses import Response
@@ -21,8 +21,9 @@ from ..services.views import (
     jobs_to_csv,
     query_jobs,
 )
+from ..services.watch import unwatch, watched_summary
 from . import schemas
-from .deps import JobFilters, get_db, require_fetch_enabled, require_write_access
+from .deps import JobFilters, active_profile_id, get_db, require_fetch_enabled, require_write_access
 
 router = APIRouter(prefix="/api")
 
@@ -70,6 +71,16 @@ def edit_jobs(edits: Dict[str, schemas.JobEdit], db: DB = Depends(get_db)):
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from None
     return schemas.Saved(saved=saved)
+
+
+@router.put("/jobs/{job_id}/label", response_model=schemas.LabelCounts, dependencies=[Depends(require_write_access)])
+def label_match(job_id: str, body: schemas.MatchLabel, db: DB = Depends(get_db),
+                profile_id: str = Depends(active_profile_id)):
+    """Mark a ranked job a good or bad match for you (or clear it). Labels are used by `python -m app.cli tune`."""
+    if not db.query("SELECT 1 AS x FROM jobs WHERE id = :id", id=job_id):
+        raise HTTPException(status_code=404, detail="No such job")
+    db.set_match_label(profile_id, job_id, body.label, datetime.now(timezone.utc).isoformat())
+    return schemas.LabelCounts(**db.match_label_counts(profile_id))
 
 
 @router.post("/jobs/bulk-sponsorship", response_model=schemas.Saved, dependencies=[Depends(require_write_access)])
@@ -126,6 +137,19 @@ def save_profile(body: schemas.Profile, db: DB = Depends(get_db)):
     now = datetime.now(timezone.utc)
     db.save_profile(profile.id, profile_to_dict(profile), now.isoformat())
     return schemas.ProfileSaved(**score_all(db, profile, now))
+
+
+# ---- companies you applied to ----------------------------------------------------------------------------
+
+@router.get("/watched", response_model=List[schemas.WatchedCompany])
+def list_watched(db: DB = Depends(get_db), profile_id: str = Depends(active_profile_id)):
+    """Companies you applied to, with their open matching jobs and how many are new this week."""
+    return watched_summary(db, profile_id)
+
+
+@router.delete("/watched/{company_key}", response_model=schemas.Saved, dependencies=[Depends(require_write_access)])
+def stop_watching(company_key: str, db: DB = Depends(get_db)):
+    return schemas.Saved(saved=unwatch(db, company_key))
 
 
 # ---- fetching --------------------------------------------------------------------------------------------

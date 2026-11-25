@@ -266,6 +266,26 @@
               "default": 0,
               "title": "Min Score"
             }
+          },
+          {
+            "name": "watched",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Watched"
+            }
+          },
+          {
+            "name": "yc",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Yc"
+            }
           }
         ],
         "responses": {
@@ -509,6 +529,26 @@
               "default": 0,
               "title": "Min Score"
             }
+          },
+          {
+            "name": "watched",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Watched"
+            }
+          },
+          {
+            "name": "yc",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Yc"
+            }
           }
         ],
         "responses": {
@@ -517,6 +557,72 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/{job_id}/label": {
+      "put": {
+        "summary": "Label Match",
+        "description": "Mark a ranked job a good or bad match for you (or clear it). Labels are used by `python -m app.cli tune`.",
+        "operationId": "label_match_api_jobs__job_id__label_put",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MatchLabel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabelCounts"
+                }
               }
             }
           },
@@ -694,6 +800,26 @@
             }
           },
           {
+            "name": "watched",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Watched"
+            }
+          },
+          {
+            "name": "yc",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Yc"
+            }
+          },
+          {
             "name": "authorization",
             "in": "header",
             "required": false,
@@ -847,6 +973,84 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Profile"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/watched": {
+      "get": {
+        "summary": "List Watched",
+        "description": "Companies you applied to, with their open matching jobs and how many are new this week.",
+        "operationId": "list_watched_api_watched_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/WatchedCompany"
+                  },
+                  "type": "array",
+                  "title": "Response List Watched Api Watched Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/watched/{company_key}": {
+      "delete": {
+        "summary": "Stop Watching",
+        "operationId": "stop_watching_api_watched__company_key__delete",
+        "parameters": [
+          {
+            "name": "company_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Company Key"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Saved"
                 }
               }
             }
@@ -1071,6 +1275,27 @@
             "type": "string",
             "title": "Match Reasons",
             "default": ""
+          },
+          "watched": {
+            "type": "boolean",
+            "title": "Watched",
+            "default": false
+          },
+          "yc_batch": {
+            "type": "string",
+            "title": "Yc Batch",
+            "default": ""
+          },
+          "match_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Match Label"
           }
         },
         "type": "object",
@@ -1187,6 +1412,45 @@
         ],
         "title": "JobsPage"
       },
+      "LabelCounts": {
+        "properties": {
+          "good": {
+            "type": "integer",
+            "title": "Good"
+          },
+          "bad": {
+            "type": "integer",
+            "title": "Bad"
+          }
+        },
+        "type": "object",
+        "required": [
+          "good",
+          "bad"
+        ],
+        "title": "LabelCounts"
+      },
+      "MatchLabel": {
+        "properties": {
+          "label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "good",
+                  "bad"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          }
+        },
+        "type": "object",
+        "title": "MatchLabel"
+      },
       "Meta": {
         "properties": {
           "experience": {
@@ -1276,6 +1540,21 @@
             },
             "type": "object",
             "title": "Skills"
+          },
+          "weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Weights"
+          },
+          "languages": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Languages"
           }
         },
         "type": "object",
@@ -1397,6 +1676,47 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "WatchedCompany": {
+        "properties": {
+          "company_key": {
+            "type": "string",
+            "title": "Company Key"
+          },
+          "company": {
+            "type": "string",
+            "title": "Company"
+          },
+          "boards": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Boards"
+          },
+          "added_at": {
+            "type": "string",
+            "title": "Added At"
+          },
+          "open_matches": {
+            "type": "integer",
+            "title": "Open Matches"
+          },
+          "fresh_matches": {
+            "type": "integer",
+            "title": "Fresh Matches"
+          }
+        },
+        "type": "object",
+        "required": [
+          "company_key",
+          "company",
+          "boards",
+          "added_at",
+          "open_matches",
+          "fresh_matches"
+        ],
+        "title": "WatchedCompany"
       }
     }
   }

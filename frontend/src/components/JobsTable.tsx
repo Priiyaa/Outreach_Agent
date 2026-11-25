@@ -11,7 +11,12 @@ type Props = {
   onSave: (id: string, change: JobEdit) => void;
   /** The note while you type; saved on blur or Enter. */
   onDraft: (id: string, change: JobEdit) => void;
+  /** Mark the match good or bad for you (null clears it); used to tune the ranking. */
+  onLabel?: (id: string, label: "good" | "bad" | null) => void;
 };
+
+const labelButton = (on: boolean, tone: string) =>
+  `rounded px-1 text-sm leading-none ${on ? tone : "opacity-40 grayscale hover:opacity-100 hover:grayscale-0"}`;
 
 const cell = "px-3 py-2 align-top";
 
@@ -29,7 +34,7 @@ function scoreClass(score: number): string {
 }
 const control = "rounded border border-zinc-300 bg-transparent px-1.5 py-1 text-sm dark:border-zinc-700";
 
-export default function JobsTable({ rows, meta, edits, onSave, onDraft }: Props) {
+export default function JobsTable({ rows, meta, edits, onSave, onDraft, onLabel }: Props) {
   return (
     <div className="overflow-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
       <table className="w-full min-w-[1000px] text-left text-sm">
@@ -54,13 +59,55 @@ export default function JobsTable({ rows, meta, edits, onSave, onDraft }: Props)
                   {job.match_score == null ? (
                     <span className="text-zinc-400" title="Not a fit for your profile (too senior, no sponsorship ...)">-</span>
                   ) : (
-                    <span className={`rounded px-1.5 py-0.5 text-xs font-semibold ${scoreClass(job.match_score)}`} title={job.match_reasons}>
-                      {job.match_score}
-                    </span>
+                    <div className="flex flex-col items-start gap-1">
+                      <span className={`rounded px-1.5 py-0.5 text-xs font-semibold ${scoreClass(job.match_score)}`} title={job.match_reasons}>
+                        {job.match_score}
+                      </span>
+                      {onLabel && (
+                        <span className="flex gap-0.5">
+                          <button
+                            aria-label={`Good match: ${job.title}`}
+                            aria-pressed={job.match_label === "good"}
+                            title="A good match for me"
+                            className={labelButton(job.match_label === "good", "bg-emerald-100 dark:bg-emerald-900/40")}
+                            onClick={() => onLabel(job.id, job.match_label === "good" ? null : "good")}
+                          >
+                            👍
+                          </button>
+                          <button
+                            aria-label={`Bad match: ${job.title}`}
+                            aria-pressed={job.match_label === "bad"}
+                            title="Not a good match for me"
+                            className={labelButton(job.match_label === "bad", "bg-red-100 dark:bg-red-900/40")}
+                            onClick={() => onLabel(job.id, job.match_label === "bad" ? null : "bad")}
+                          >
+                            👎
+                          </button>
+                        </span>
+                      )}
+                    </div>
                   )}
                 </td>
                 <td className={`${cell} min-w-[280px]`}>
-                  <div className="font-semibold">{job.company}</div>
+                  <div className="flex items-center gap-2 font-semibold">
+                    {job.company}
+                    {job.yc_batch && (
+                      <span
+                        className="rounded bg-orange-100 px-1.5 py-0.5 text-[11px] font-medium text-orange-800 dark:bg-orange-900/40 dark:text-orange-300"
+                        title={`Y Combinator company, batch ${job.yc_batch}`}
+                      >
+                        YC {job.yc_batch}
+                      </span>
+                    )}
+                    {job.watched && (
+                      <span
+                        className="rounded bg-violet-100 px-1.5 py-0.5 text-[11px] font-medium text-violet-800 dark:bg-violet-900/40 dark:text-violet-300"
+                        title="You applied here before. This company's careers page is checked on every fetch."
+                      >
+                        Applied here
+                      </span>
+                    )}
+                  </div>
                   <a href={job.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline dark:text-blue-400">
                     {job.title}
                   </a>

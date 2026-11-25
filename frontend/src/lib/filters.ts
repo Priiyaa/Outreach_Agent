@@ -10,6 +10,8 @@ export type Filters = {
   usOnly: boolean;
   internships: boolean;
   closed: boolean;
+  watched: boolean;
+  yc: boolean;
   search: string;
   location: string;
   sinceDays: number;
@@ -27,6 +29,8 @@ export const DEFAULT_FILTERS: Filters = {
   usOnly: true,
   internships: false,
   closed: false,
+  watched: false,
+  yc: false,
   search: "",
   location: "",
   sinceDays: 0,
@@ -42,6 +46,8 @@ export function toParams(f: Filters, paging?: { limit: number; offset: number })
   p.set("us_only", String(f.usOnly));
   p.set("internships", String(f.internships));
   p.set("closed", String(f.closed));
+  if (f.watched) p.set("watched", "true");
+  if (f.yc) p.set("yc", "true");
   if (f.search.trim()) p.set("search", f.search.trim());
   if (f.location.trim()) p.set("location", f.location.trim());
   if (f.sinceDays > 0) p.set("since_days", String(f.sinceDays));

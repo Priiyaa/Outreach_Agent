@@ -1,0 +1,465 @@
+# Hiring YC startups with a public job board, found by `python -m app.cli discover-yc` from the yc-oss
+# mirror of YC's company directory. Rewritten on every run. `yc` is the batch shown on the board.
+ashby:
+- {name: Abacum, slug: abacum, yc: W21}
+- {name: Abundant, slug: abundant, yc: F24}
+- {name: Accord, slug: accord, yc: W20}
+- {name: AfterQuery, slug: afterquery, yc: W25}
+- {name: Agave, slug: agave, yc: W22}
+- {name: AgentMail, slug: agentmail, yc: S25}
+- {name: AIOS, slug: aios, yc: W20}
+- {name: AiPrise, slug: aiprise, yc: S22}
+- {name: Airgoods, slug: airgoods, yc: S23}
+- {name: Aleph, slug: aleph, yc: S21}
+- {name: Ambral, slug: ambral, yc: S25}
+- {name: Andromeda Surgical, slug: andromedasurgical, yc: S23}
+- {name: Anima, slug: anima, yc: W21}
+- {name: AnswerThis, slug: answerthis, yc: F25}
+- {name: Anthrogen, slug: anthrogen, yc: S24}
+- {name: Apolink, slug: apolink, yc: F24}
+- {name: Apollo, slug: apollo, yc: S11}
+- {name: Apollo, slug: apollo, yc: W22}
+- {name: Apollo.io, slug: apollo, yc: W16}
+- {name: Aragorn AI, slug: aragorn, yc: S22}
+- {name: Arini, slug: arini, yc: W24}
+- {name: Arketa, slug: arketa, yc: S20}
+- {name: ARQ, slug: arq, yc: S21}
+- {name: Artie, slug: artie, yc: S23}
+- {name: Artisan, slug: artisan, yc: W24}
+- {name: Artos, slug: artosai, yc: W24}
+- {name: Ashby, slug: ashby, yc: W19}
+- {name: Asimov, slug: asimov, yc: W26}
+- {name: Assembly, slug: assembly, yc: W18}
+- {name: Astro Mechanica, slug: astro-mechanica, yc: W24}
+- {name: Atlas, slug: atlas, yc: W19}
+- {name: Atlas, slug: atlas, yc: S21}
+- {name: AtoB, slug: atob, yc: S20}
+- {name: Atomic, slug: atomic, yc: S20}
+- {name: Atomic Industries, slug: atomic, yc: W21}
+- {name: Auctor, slug: auctor, yc: X25}
+- {name: Aurelian, slug: aurelian, yc: S22}
+- {name: authzed, slug: authzed, yc: W21}
+- {name: Automat, slug: automat, yc: W23}
+- {name: Autumn, slug: autumn, yc: W26}
+- {name: Avallon AI, slug: avallon, yc: X25}
+- {name: Avoca, slug: avoca, yc: W23}
+- {name: Axle Health, slug: axle-health, yc: W21}
+- {name: Belvo, slug: belvo, yc: W20}
+- {name: Benepass, slug: benepass, yc: W20}
+- {name: Beyond Reach Labs, slug: beyondreachlabs, yc: W26}
+- {name: Bild AI, slug: bild-ai, yc: W25}
+- {name: Bland AI, slug: bland, yc: S23}
+- {name: Blee, slug: blee, yc: S22}
+- {name: Blissway, slug: blissway, yc: S20}
+- {name: Bolna AI, slug: bolna, yc: F25}
+- {name: BootLoop, slug: bootloop, yc: S25}
+- {name: Brainbase Labs, slug: brainbaselabs, yc: W24}
+- {name: Bree, slug: bree, yc: S21}
+- {name: Bretton AI, slug: brettonai, yc: S23}
+- {name: Brighterway, slug: brighterway, yc: S24}
+- {name: Broccoli AI, slug: broccoli, yc: W22}
+- {name: Brumby, slug: brumby, yc: W26}
+- {name: Bunkerhill Health, slug: bunkerhillhealth, yc: W19}
+- {name: Camber, slug: camber, yc: W21}
+- {name: Cambio, slug: cambio, yc: S22}
+- {name: Cambly, slug: cambly, yc: W14}
+- {name: Campfire, slug: campfire, yc: S23}
+- {name: Candid Health, slug: candidhealth, yc: W20}
+- {name: CaptivateIQ, slug: captivateiq, yc: W18}
+- {name: Capy, slug: capy, yc: F24}
+- {name: Casca, slug: casca, yc: S23}
+- {name: Castle, slug: castle, yc: W16}
+- {name: Charge Robotics, slug: charge-robotics, yc: S21}
+- {name: Chariot, slug: chariot, yc: S22}
+- {name: Chestnut, slug: chestnut, yc: X25}
+- {name: Cinder, slug: cinder, yc: W22}
+- {name: Circleback, slug: circleback, yc: W24}
+- {name: CircuitHub, slug: circuithub, yc: W12}
+- {name: Claim Health, slug: claim-health, yc: X25}
+- {name: ClaimSorted, slug: claimsorted, yc: S24}
+- {name: Clarion, slug: clarion, yc: W24}
+- {name: ClassDojo, slug: classdojo, yc: S12}
+- {name: Clipboard, slug: clipboard, yc: W17}
+- {name: Codes Health, slug: codes-health, yc: S24}
+- {name: CoinTracker, slug: cointracker, yc: W18}
+- {name: CommodityAI, slug: commodityai, yc: W24}
+- {name: Complete, slug: complete, yc: W22}
+- {name: Complif, slug: complif, yc: W22}
+- {name: Complir, slug: complir, yc: X26}
+- {name: Concourse, slug: concourse, yc: W23}
+- {name: Conduit, slug: conduit, yc: W23}
+- {name: Conduit, slug: conduit, yc: W24}
+- {name: Confido, slug: confido, yc: S21}
+- {name: Cosine, slug: cosine, yc: W23}
+- {name: Credal.ai, slug: credal, yc: W23}
+- {name: CTGT, slug: ctgt, yc: F24}
+- {name: Curri, slug: curri, yc: S19}
+- {name: Datafold, slug: datafold, yc: S20}
+- {name: Dataleap, slug: dataleap, yc: S24}
+- {name: David AI, slug: david-ai, yc: S24}
+- {name: Decoda Health, slug: decodahealth, yc: S23}
+- {name: Dedalus Labs, slug: dedalus-labs, yc: S25}
+- {name: Deel, slug: deel, yc: W19}
+- {name: Deepgram, slug: deepgram, yc: W16}
+- {name: Deepnote, slug: deepnote, yc: S19}
+- {name: DiligenceSquared, slug: diligencesquared, yc: F25}
+- {name: 'Diode Computers, Inc.', slug: diode, yc: S24}
+- {name: Dispatch, slug: dispatch, yc: X26}
+- {name: Ditto, slug: ditto, yc: W20}
+- {name: Dodo, slug: dodo, yc: S24}
+- {name: Domu Technology Inc., slug: domu, yc: S24}
+- {name: Double, slug: double, yc: S21}
+- {name: Duffel, slug: duffel, yc: S18}
+- {name: Dyneti Technologies, slug: dyneti, yc: W19}
+- {name: Eight Sleep, slug: eightsleep, yc: S15}
+- {name: Electric Air, slug: electricair, yc: S23}
+- {name: Ello, slug: ello, yc: W20}
+- {name: Eloquent AI, slug: eloquentai, yc: X25}
+- {name: Enode, slug: enode, yc: W21}
+- {name: Escape, slug: escape, yc: W23}
+- {name: Event Horizon Labs, slug: event-horizon-labs, yc: W24}
+- {name: Eventual, slug: eventual, yc: W22}
+- {name: Fernstone, slug: fernstone, yc: F25}
+- {name: Fieldguide, slug: fieldguide, yc: S20}
+- {name: Finch, slug: finch, yc: S20}
+- {name: Finni Health, slug: finni-health, yc: W23}
+- {name: FINNY AI, slug: finny, yc: S24}
+- {name: Firecrawl, slug: firecrawl, yc: S22}
+- {name: FirstWork, slug: firstwork, yc: S24}
+- {name: Flai, slug: flai, yc: S25}
+- {name: Fleek, slug: fleek, yc: W22}
+- {name: FleetWorks, slug: fleetworks, yc: S23}
+- {name: Flex, slug: flex, yc: S23}
+- {name: Flint, slug: flint, yc: S20}
+- {name: Flint, slug: flint, yc: S23}
+- {name: Flowtel, slug: flowtel, yc: W25}
+- {name: FlutterFlow, slug: flutterflow, yc: W21}
+- {name: Formance, slug: formance, yc: S21}
+- {name: Fortuna Health, slug: fortuna-health, yc: S23}
+- {name: Fours, slug: fours, yc: W23}
+- {name: Freshpaint, slug: freshpaint, yc: S19}
+- {name: FurtherAI, slug: furtherai, yc: W24}
+- {name: Garage, slug: garage, yc: W24}
+- {name: Gecko Robotics, slug: gecko-robotics, yc: W16}
+- {name: General Astronautics, slug: generalastronautics, yc: W26}
+- {name: Gigs, slug: gigs, yc: W21}
+- {name: Glimpse, slug: glimpse, yc: S20}
+- {name: GoLinks, slug: golinks, yc: W19}
+- {name: GovDash, slug: govdash, yc: W22}
+- {name: GovEagle, slug: goveagle, yc: W23}
+- {name: Great Question, slug: greatquestion, yc: W21}
+- {name: Greenboard, slug: greenboard, yc: W24}
+- {name: Greptile, slug: greptile, yc: W24}
+- {name: GUILD, slug: guild, yc: S26}
+- {name: Halluminate, slug: halluminate, yc: S25}
+- {name: Happl, slug: happl, yc: W22}
+- {name: Harper, slug: harperinsure, yc: W25}
+- {name: Hedge, slug: hedge, yc: X26}
+- {name: Heron, slug: herondata, yc: S20}
+- {name: HockeyStack, slug: hockeystack, yc: S23}
+- {name: Hotplate, slug: hotplate, yc: S20}
+- {name: HUD, slug: hud, yc: W25}
+- {name: Humaans, slug: humaans, yc: W21}
+- {name: Human Archive, slug: humanarchive, yc: W26}
+- {name: Hyperbound, slug: hyperbound, yc: S23}
+- {name: Hypercubic, slug: hypercubic, yc: F25}
+- {name: idler, slug: idler, yc: S25}
+- {name: Infinite, slug: infinite, yc: W25}
+- {name: Infisical, slug: infisical, yc: W23}
+- {name: InfluxData, slug: influxdata, yc: W13}
+- {name: Inkeep, slug: inkeep, yc: W23}
+- {name: Innate, slug: innate, yc: F24}
+- {name: Interfere, slug: interfere, yc: S25}
+- {name: Invert, slug: invert, yc: W22}
+- {name: Invopop, slug: invopop, yc: W23}
+- {name: Jeevy Fabrication, slug: jeevyfabrication, yc: X25}
+- {name: Jiga, slug: jiga, yc: W21}
+- {name: Juicebox, slug: juicebox, yc: S22}
+- {name: Julius, slug: julius, yc: S22}
+- {name: Junction, slug: junction, yc: W20}
+- {name: Kalshi, slug: kalshi, yc: W19}
+- {name: Kastle, slug: kastle, yc: S24}
+- {name: Kingdom, slug: kingdom, yc: S20}
+- {name: Kivo Health, slug: kivo-health, yc: W23}
+- {name: Knowtex, slug: knowtex, yc: S22}
+- {name: Kodex, slug: kodex, yc: S21}
+- {name: Lance, slug: Lance, yc: W26}
+- {name: Lapel, slug: lapel, yc: X25}
+- {name: Latent, slug: latent, yc: W23}
+- {name: Legion Health, slug: legionhealth, yc: S21}
+- {name: Legora, slug: legora, yc: W24}
+- {name: Lightdash, slug: lightdash, yc: S20}
+- {name: LiteLLM, slug: litellm, yc: W23}
+- {name: Litmus, slug: litmushiring, yc: S26}
+- {name: LiveFlow, slug: liveflow, yc: W21}
+- {name: Lucis, slug: lucis, yc: X25}
+- {name: Luminai, slug: luminai, yc: S20}
+- {name: Luminal, slug: luminal, yc: S25}
+- {name: Mach9, slug: mach9, yc: S21}
+- {name: Magic, slug: magic, yc: W15}
+- {name: Magic Patterns, slug: magicpatterns, yc: W23}
+- {name: MangoDesk, slug: mangodesk, yc: S25}
+- {name: Marble, slug: marble, yc: S26}
+- {name: Mem0, slug: mem0, yc: S24}
+- {name: Metal, slug: metal, yc: W23}
+- {name: Metriport, slug: metriport, yc: S22}
+- {name: Middesk, slug: middesk, yc: W19}
+- {name: Mintlify, slug: mintlify, yc: W22}
+- {name: Miso Labs, slug: misolabs, yc: X26}
+- {name: Modern Treasury, slug: moderntreasury, yc: S18}
+- {name: Momentic, slug: momentic, yc: W24}
+- {name: MorphoAI, slug: morpho, yc: X25}
+- {name: Mosaic, slug: mosaic, yc: W25}
+- {name: Moss, slug: moss, yc: F25}
+- {name: Mutiny, slug: mutiny, yc: S18}
+- {name: Nango, slug: nango, yc: W23}
+- {name: Nash, slug: nash, yc: S21}
+- {name: Nectar, slug: nectar, yc: S23}
+- {name: New Story, slug: new-story, yc: S15}
+- {name: Nomic Bio, slug: nomic, yc: W20}
+- {name: Notabene, slug: notabene, yc: S20}
+- {name: Novig, slug: novig, yc: S22}
+- {name: Nowadays, slug: nowadays, yc: S23}
+- {name: Nox Metals, slug: nox-metals, yc: S25}
+- {name: Numeral, slug: numeral, yc: W23}
+- {name: Odys Aviation, slug: odys-aviation, yc: S21}
+- {name: OffDeal, slug: offdeal, yc: W24}
+- {name: One Robot, slug: onerobot, yc: W26}
+- {name: OneChronos, slug: onechronos, yc: S16}
+- {name: Oneleet, slug: oneleet, yc: S22}
+- {name: OneSchema, slug: oneschema, yc: S21}
+- {name: Outset, slug: outset, yc: S23}
+- {name: Overview, slug: overview, yc: W19}
+- {name: Padlet, slug: padlet, yc: W13}
+- {name: Paradigm, slug: paradigm, yc: W24}
+- {name: Parallel Bio, slug: parallel-bio, yc: S21}
+- {name: Parameter, slug: parameter, yc: W26}
+- {name: Pax Historia, slug: pax-historia, yc: W26}
+- {name: PermitFlow, slug: permitflow, yc: W22}
+- {name: Pharos, slug: pharos, yc: S24}
+- {name: Phoenix, slug: phoenix, yc: W21}
+- {name: Phonely, slug: phonely, yc: S24}
+- {name: Pirros, slug: pirros, yc: W23}
+- {name: Pivot Robotics, slug: pivotrobotics, yc: W24}
+- {name: Pocket, slug: pocket, yc: W26}
+- {name: PointOne, slug: pointone, yc: W24}
+- {name: Polymath, slug: polymath, yc: W26}
+- {name: Popl, slug: popl, yc: W21}
+- {name: Posh, slug: posh, yc: W22}
+- {name: PostHog, slug: posthog, yc: W20}
+- {name: Prelim, slug: prelim, yc: S17}
+- {name: Probably Genetic, slug: probablygenetic, yc: W19}
+- {name: Promise, slug: promise, yc: W18}
+- {name: Proof of Human, slug: proofofhuman, yc: S23}
+- {name: Pulse, slug: pulse, yc: S24}
+- {name: Pure, slug: pureapp, yc: S23}
+- {name: Pylon, slug: pylon-labs, yc: W23}
+- {name: Quicknode, slug: quicknode, yc: W21}
+- {name: Quindar, slug: quindar, yc: S22}
+- {name: RADAR, slug: radar, yc: W13}
+- {name: Raindrop, slug: raindrop, yc: W24}
+- {name: Rally, slug: rallyuxr, yc: W22}
+- {name: Reach, slug: reach, yc: S15}
+- {name: Reacher, slug: reacher, yc: S25}
+- {name: Ready, slug: ready, yc: S20}
+- {name: Reality Defender, slug: realitydefender, yc: W22}
+- {name: Recall.ai, slug: recall, yc: W20}
+- {name: Reducto, slug: reducto, yc: W24}
+- {name: Reform, slug: reform, yc: W24}
+- {name: Relace, slug: relace, yc: W23}
+- {name: Relling, slug: relling, yc: S25}
+- {name: Replit, slug: replit, yc: W18}
+- {name: Replo, slug: replo, yc: S21}
+- {name: Rescale, slug: rescale, yc: W12}
+- {name: Retell AI, slug: retell-ai, yc: W24}
+- {name: RevenueCat, slug: revenuecat, yc: S18}
+- {name: Revise Robotics, slug: reviserobotics, yc: W25}
+- {name: Rivet, slug: rivet, yc: W23}
+- {name: Roboflow, slug: roboflow, yc: S20}
+- {name: Rollstack, slug: rollstack, yc: W23}
+- {name: Runway, slug: runway, yc: W21}
+- {name: Ryvn, slug: ryvn, yc: F24}
+- {name: SafetyKit, slug: safetykit, yc: S23}
+- {name: SalesPatriot, slug: salespatriot, yc: W25}
+- {name: Salient, slug: salient, yc: W23}
+- {name: Serif Health, slug: serifhealth, yc: W22}
+- {name: SF Tensor, slug: sf-tensor, yc: F25}
+- {name: Shepherd, slug: shepherd, yc: W21}
+- {name: Short Story, slug: shortstory, yc: S19}
+- {name: Sieve, slug: sieve, yc: W22}
+- {name: Sift, slug: sift, yc: S11}
+- {name: SigNoz, slug: signoz, yc: W21}
+- {name: Sim, slug: sim, yc: X25}
+- {name: Simple AI, slug: simple-ai, yc: S24}
+- {name: Slope, slug: slope, yc: S21}
+- {name: SnapMagic, slug: snapmagic, yc: S15}
+- {name: Sola, slug: sola, yc: S23}
+- {name: Solidroad, slug: solidroad, yc: W25}
+- {name: Spade, slug: spade, yc: W22}
+- {name: Speak, slug: speak, yc: W17}
+- {name: Spellbrush, slug: spellbrush, yc: W18}
+- {name: Sphere, slug: sphere, yc: W22}
+- {name: SpruceID, slug: spruceid, yc: W21}
+- {name: Spur, slug: spur, yc: S24}
+- {name: Stable, slug: stable, yc: W20}
+- {name: Stepful, slug: stepful, yc: S21}
+- {name: Strada, slug: stradahq, yc: S23}
+- {name: Stream, slug: stream, yc: S22}
+- {name: Svix, slug: svix, yc: W21}
+- {name: Sweep, slug: sweep, yc: S23}
+- {name: Sweetspot, slug: sweetspot, yc: S23}
+- {name: Sygaldry Technologies, slug: sygaldry-technologies, yc: X25}
+- {name: Tailor, slug: tailor, yc: S22}
+- {name: Taktile, slug: taktile, yc: S20}
+- {name: Tamarind Bio, slug: tamarindbio, yc: W24}
+- {name: Tavus, slug: tavus, yc: S21}
+- {name: Tennr, slug: tennr, yc: W23}
+- {name: Tenor, slug: tenor, yc: S26}
+- {name: Terminal, slug: terminal, yc: S23}
+- {name: Thera, slug: thera, yc: S22}
+- {name: Thunder Compute, slug: thundercompute, yc: S24}
+- {name: Titan, slug: titan, yc: S18}
+- {name: Topline Pro, slug: topline-pro, yc: W21}
+- {name: Trellis AI, slug: runtrellis, yc: W24}
+- {name: Triomics, slug: triomics, yc: W21}
+- {name: TRM Labs, slug: trm-labs, yc: S19}
+- {name: Tsenta, slug: tsenta, yc: S26}
+- {name: Tuesday Labs, slug: tuesday-labs, yc: W24}
+- {name: Turion Space, slug: turion-space, yc: S21}
+- {name: Twenty, slug: twenty, yc: S23}
+- {name: UpCodes, slug: upcodes, yc: S17}
+- {name: Uplane, slug: uplane, yc: F25}
+- {name: Usul, slug: usul, yc: S24}
+- {name: Vanta, slug: vanta, yc: W18}
+- {name: Vapi, slug: vapi, yc: W21}
+- {name: Variance, slug: variance, yc: W23}
+- {name: Vector, slug: vector, yc: W23}
+- {name: Vera Health, slug: verahealth, yc: S24}
+- {name: Veritus, slug: veritus, yc: S25}
+- {name: Verne Robotics, slug: Verne%20Robotics, yc: S25}
+- {name: Verse Medical, slug: versemedical, yc: S18}
+- {name: Vetcove, slug: vetcove, yc: S16}
+- {name: Vitalize, slug: vitalize, yc: W23}
+- {name: voize, slug: voize, yc: W22}
+- {name: Vooma, slug: vooma, yc: W23}
+- {name: Vori, slug: vori, yc: W20}
+- {name: Vorticity, slug: vorticity, yc: S19}
+- {name: Weave, slug: weave, yc: W25}
+- {name: Whatnot, slug: whatnot, yc: W20}
+- {name: Within, slug: within.ai, yc: S18}
+- {name: Wonderly, slug: wonderly, yc: W20}
+- {name: Y Combinator, slug: ycombinator, yc: Unspecified}
+- {name: Zapier, slug: zapier, yc: S12}
+- {name: Zeit AI, slug: zeit-ai, yc: S24}
+- {name: Zensors, slug: zensors, yc: S21}
+- {name: Ziina, slug: ziina, yc: W21}
+- {name: Zip, slug: zip, yc: S20}
+greenhouse:
+- {name: Agency, slug: agency, yc: W22}
+- {name: Albedo, slug: albedo, yc: W21}
+- {name: Algolia, slug: algolia, yc: W14}
+- {name: Alpaca, slug: alpaca, yc: W19}
+- {name: AON3D, slug: aon3d, yc: W17}
+- {name: AssemblyAI, slug: assemblyai, yc: S17}
+- {name: Astranis, slug: astranis, yc: W16}
+- {name: Attain, slug: attain, yc: W22}
+- {name: Axiom, slug: axiom, yc: W25}
+- {name: Axle, slug: axle, yc: S22}
+- {name: Beam, slug: beam, yc: W22}
+- {name: Bitmovin, slug: bitmovin, yc: S15}
+- {name: burnt, slug: burnt, yc: S25}
+- {name: CarbonChain, slug: carbonchain, yc: S20}
+- {name: Checkr, slug: checkr, yc: S14}
+- {name: Clara, slug: clara, yc: X26}
+- {name: Coast, slug: coast, yc: S21}
+- {name: Dots 💸, slug: dots, yc: S21}
+- {name: Faire, slug: faire, yc: W17}
+- {name: Flexport, slug: flexport, yc: W14}
+- {name: General Proximity, slug: generalproximity, yc: W20}
+- {name: GiveCampus, slug: givecampus, yc: S15}
+- {name: GOAT Group, slug: goatgroup, yc: W11}
+- {name: Gusto, slug: gusto, yc: W12}
+- {name: HackerRank, slug: hackerrank, yc: S11}
+- {name: Harbor, slug: harborglobal, yc: X26}
+- {name: Haven, slug: haven, yc: W20}
+- {name: Haven, slug: haven, yc: W23}
+- {name: Hazel, slug: hazel, yc: W24}
+- {name: Human Interest, slug: humaninterestswe1, yc: S15}
+- {name: Icarus, slug: icarus, yc: F25}
+- {name: IMT Care, slug: imt, yc: W22}
+- {name: Instawork, slug: instawork, yc: S15}
+- {name: Lattice, slug: lattice, yc: W16}
+- {name: Legalist, slug: legalist, yc: S16}
+- {name: Limrun, slug: limrun, yc: X26}
+- {name: Lob, slug: lob, yc: S13}
+- {name: May Mobility, slug: maymobility, yc: S17}
+- {name: Meru Health, slug: meruhealth, yc: S18}
+- {name: Modern Health, slug: modernhealth, yc: W18}
+- {name: Nabis, slug: nabis, yc: W19}
+- {name: Newton, slug: newton, yc: W24}
+- {name: Nira Energy, slug: niraenergy, yc: W22}
+- {name: Nova Credit, slug: novacredit, yc: S16}
+- {name: Odeko, slug: odeko, yc: S19}
+- {name: OpenWork, slug: openwork, yc: X26}
+- {name: Ophelia, slug: ophelia, yc: W20}
+- {name: Orbital Operations, slug: orbitaloperations, yc: W25}
+- {name: Osmosis, slug: osmosis, yc: W25}
+- {name: Pair Team, slug: pairteam, yc: S19}
+- {name: Pelago, slug: pelago, yc: W18}
+- {name: PicnicAI, slug: picnicai, yc: S14}
+- {name: Porter, slug: porter, yc: S20}
+- {name: Postscript, slug: postscript, yc: W19}
+- {name: Preload, slug: preload, yc: F26}
+- {name: Prodigal, slug: prodigal, yc: S18}
+- {name: Prolific, slug: prolificacademicltd, yc: S19}
+- {name: Prospa, slug: prospa, yc: W21}
+- {name: Qventus, slug: qventus, yc: W15}
+- {name: Recidiviz, slug: recidiviz, yc: S19}
+- {name: Reflex, slug: reflex, yc: W23}
+- {name: Relativity Space, slug: relativity, yc: W16}
+- {name: Scale AI, slug: scaleai, yc: S16}
+- {name: Sendbird, slug: sendbird, yc: W16}
+- {name: Spaceium Inc, slug: spaceium, yc: S24}
+- {name: Stripe, slug: stripe, yc: S09}
+- {name: Swayable, slug: swayable, yc: W18}
+- {name: Tempo, slug: tempo, yc: W15}
+- {name: Tempo, slug: tempo, yc: S23}
+- {name: Tint, slug: tintai, yc: W21}
+- {name: Treasury Prime, slug: treasuryprime, yc: W18}
+- {name: Webflow, slug: webflow, yc: S13}
+- {name: Xendit, slug: xendit, yc: S15}
+- {name: Yuma AI, slug: yuma, yc: W23}
+lever:
+- {name: Blue, slug: blue, yc: S25}
+- {name: Bolster, slug: bolster, yc: S21}
+- {name: Canary Technologies, slug: canarytechnologies, yc: S18}
+- {name: doola, slug: doola, yc: S20}
+- {name: FamPay, slug: fampay, yc: S19}
+- {name: Farcast, slug: Farcast, yc: W20}
+- {name: Finn, slug: finn, yc: W23}
+- {name: Gridware, slug: gridware, yc: W21}
+- {name: Handoff, slug: handoff, yc: W20}
+- {name: Hive, slug: hive, yc: S14}
+- {name: Laminar, slug: runlaminar, yc: F24}
+- {name: Mashgin, slug: mashgin, yc: W15}
+- {name: Multiply Labs, slug: multiplylabs, yc: S16}
+- {name: Mytos, slug: mytos, yc: S18}
+- {name: Netomi, slug: netomi, yc: W16}
+- {name: People.ai, slug: people-ai, yc: S16}
+- {name: PostEra, slug: postera, yc: W20}
+- {name: Prosper, slug: prosper, yc: S23}
+- {name: Quartzy, slug: quartzy, yc: S11}
+- {name: Sapling.ai, slug: sapling, yc: W19}
+- {name: Skyways, slug: skyways, yc: S17}
+- {name: Smartcuts, slug: smartcuts, yc: W21}
+- {name: Snappr, slug: snappr, yc: W17}
+- {name: Text.ai, slug: text, yc: X25}
+- {name: Thunkable, slug: thunkable, yc: W16}
+- {name: Tovala, slug: tovala, yc: W16}
+- {name: Two Dots, slug: twodots, yc: S22}
+- {name: Unusual, slug: unusual, yc: F24}
+- {name: VergeSense, slug: vergesense, yc: S17}
+- {name: 'Volta Labs, Inc.', slug: voltalabs, yc: W19}
+- {name: Zippi, slug: zippi, yc: S19}
+workday:
+- {name: Ultra, slug: ultra.wd3.myworkdayjobs.com/ultra/ultra-careers, yc: S24}

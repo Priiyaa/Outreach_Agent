@@ -100,3 +100,12 @@ def test_blank_posting_from_a_company_that_never_sponsors_is_not_scored():
     assert score_job(PROFILE, blank, NOW, frozenset({"acme"})) is not None
     says_yes = {**row(sponsorship="Yes"), "company_key": "spacex"}
     assert score_job(PROFILE, says_yes, NOW, frozenset({"spacex"})) is not None  # the posting itself wins
+
+
+def test_no_location_preference_means_anywhere_in_the_us():
+    from app.services.match import Profile, score_job
+    row = {"title": "Software Engineer", "description": "", "experience": "New grad", "exp_reason": "title",
+           "sponsorship": "Unknown", "location": "Boise, ID", "first_seen": "2026-11-18", "company_key": "x"}
+    anywhere = score_job(Profile(preferred_locations=[]), row)[0]
+    chicago = score_job(Profile(preferred_locations=["chicago"]), row)[0]
+    assert anywhere > chicago  # full location points instead of half, for any US city

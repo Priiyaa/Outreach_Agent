@@ -40,6 +40,8 @@ class JobFilters:
         since_days: int = Query(0, ge=0),
         sort: Literal["newest", "match"] = "newest",
         min_score: int = Query(0, ge=0, le=100),
+        watched: bool = False,
+        yc: bool = False,
         profile_id: str = Depends(active_profile_id),
     ) -> None:
         self.sort = sort
@@ -48,6 +50,7 @@ class JobFilters:
             cs_related_only=cs_only, us_only=us_only, include_internships=internships,
             include_closed=closed, search=search, location=location, since_days=since_days or None,
             profile=profile_id, matches_only=sort == "match", min_score=min_score,
+            watched_only=watched, yc_only=yc,
         )
 
 

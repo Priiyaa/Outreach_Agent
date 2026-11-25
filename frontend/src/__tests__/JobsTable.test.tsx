@@ -15,7 +15,7 @@ const job: Job = {
   id: "j1", company: "Acme", title: "Software Engineer, New Grad", location: "Chicago, IL",
   cs_role_evidence: "title: Software", role_family: "", experience: "New grad",
   sponsorship: "Unknown", sponsorship_note: "", status: "new", url: "https://example.com/1",
-  first_seen: "2026-10-15T18:34:49+00:00", match_score: null, match_reasons: "",
+  first_seen: "2026-10-15T18:34:49+00:00", match_score: null, match_reasons: "", watched: false, yc_batch: "", match_label: null,
 };
 
 describe("JobsTable", () => {
@@ -72,5 +72,29 @@ describe("JobsTable", () => {
     rerender(<JobsTable rows={[job]} meta={meta} edits={{ j1: { sponsorship_note: "E-Verify" } }} onSave={onSave} onDraft={onDraft} />);
     await userEvent.keyboard("{Enter}");
     expect(onSave).toHaveBeenCalledWith("j1", { sponsorship_note: "E-Verify" });
+  });
+
+  it("tags companies you applied to", () => {
+    render(<JobsTable rows={[{ ...job, watched: true }]} meta={meta} edits={{}} onSave={() => {}} onDraft={() => {}} />);
+    expect(screen.getByText("Applied here")).toHaveAttribute("title", expect.stringContaining("checked on every fetch"));
+  });
+
+  it("labels Y Combinator companies with their batch", () => {
+    render(<JobsTable rows={[{ ...job, yc_batch: "W24" }]} meta={meta} edits={{}} onSave={() => {}} onDraft={() => {}} />);
+    expect(screen.getByText("YC W24")).toHaveAttribute("title", "Y Combinator company, batch W24");
+  });
+
+  it("labels a match good or bad, and a second click clears it", async () => {
+    const onLabel = vi.fn();
+    const scored = { ...job, match_score: 82, match_reasons: "software role" };
+    const { rerender } = render(<JobsTable rows={[scored]} meta={meta} edits={{}} onSave={() => {}} onDraft={() => {}} onLabel={onLabel} />);
+    await userEvent.click(screen.getByRole("button", { name: /Good match/ }));
+    expect(onLabel).toHaveBeenLastCalledWith("j1", "good");
+    rerender(<JobsTable rows={[{ ...scored, match_label: "good" }]} meta={meta} edits={{}} onSave={() => {}} onDraft={() => {}} onLabel={onLabel} />);
+    expect(screen.getByRole("button", { name: /Good match/ })).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(screen.getByRole("button", { name: /Good match/ }));
+    expect(onLabel).toHaveBeenLastCalledWith("j1", null);
+    await userEvent.click(screen.getByRole("button", { name: /Bad match/ }));
+    expect(onLabel).toHaveBeenLastCalledWith("j1", "bad");
   });
 });

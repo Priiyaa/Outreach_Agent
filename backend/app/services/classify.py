@@ -24,7 +24,12 @@ _SENIOR_TITLE = re.compile(
     r"|lead(?!\s+gen)|director|head\s+of|vp|vice\s+president|architect|distinguished)\b",
     re.I,
 )
-_LEVEL_SENIOR = re.compile(r"\s(?:III|IV|V|VI)\s*$")  # "Software Engineer III"
+# "Software Engineer III", "Full-stack Engineer 5", "SWE IV (Platform)", "Engineer, Level 3": level 3 and up is past
+# early career. "Engineer II" / "Engineer 2" are not matched.
+_LEVEL_SENIOR = re.compile(
+    r"\s(?:III|IV|V|VI)\s*$"
+    r"|\b(?:engineer|developer|scientist|programmer|analyst|sde|swe|mts)\s*,?\s*(?:level\s*)?(?:III|IV|VI?|[3-9])\b(?![.\-/]?\d)",
+    re.I)
 _LEVEL_JUNIOR = re.compile(r"\s(?:I|II)\s*$")  # "Software Engineer II" is still within 0-3 years
 _NEW_TITLE = re.compile(
     r"\b(new\s*grad(?:uate)?s?|entry[\s-]*level|junior|jr|graduate|early\s+career|associate"

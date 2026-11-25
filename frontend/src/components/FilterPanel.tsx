@@ -110,6 +110,8 @@ export default function FilterPanel({ meta, filters, onChange }: Props) {
             ["usOnly", "US jobs only"],
             ["internships", "Include internships"],
             ["closed", "Include closed postings"],
+            ["watched", "Only companies I applied to"],
+            ["yc", "YC startups only"],
           ] as const
         ).map(([key, label]) => (
           <label key={key} className="flex items-center gap-2">

@@ -6,6 +6,11 @@ http:
   workers: 8          # parallel company fetches; keep modest to be polite to the ATS APIs
   user_agent: "outreach-agent/0.1 (personal job search tool)"
 
+# How long untracked jobs are kept. A fetch skips postings older than this and deletes stored ones that age past it.
+# Jobs you saved or applied to are never deleted.
+retention:
+  days: 7
+
 # Optional second-opinion pass on jobs the rules are unsure about. provider: none turns it off (nothing is sent).
 # For gemini: put GEMINI_API_KEY in backend/.env and check the model name is current.
 llm:

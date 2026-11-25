@@ -108,6 +108,22 @@ export default function JobsView() {
     setPage(0);
   };
   const draft = (id: string, change: JobEdit) => setEdits((prev) => ({ ...prev, [id]: { ...prev[id], ...change } }));
+  const label = useMutation({
+    mutationFn: ({ id, value }: { id: string; value: "good" | "bad" | null }) => api.labelJob(id, value),
+    onSuccess: (counts, { id, value }) => {
+      queryClient.setQueriesData<JobsPage>(
+        { queryKey: ["jobs"] },
+        (old) => old && { ...old, rows: old.rows.map((r) => (r.id === id ? { ...r, match_label: value } : r)) },
+      );
+      const total = counts.good + counts.bad;
+      const next =
+        total < 20
+          ? ` About ${20 - total} more (at least 5 of each) and the ranking can be tuned to you.`
+          : " Enough to tune: run `python -m app.cli tune`.";
+      setNotice({ ok: true, text: `Labels: ${counts.good} good, ${counts.bad} bad.${next}` });
+    },
+    onError: (err) => setNotice({ ok: false, text: `Label not saved: ${err.message}` }),
+  });
   const saveNow = (id: string, change: JobEdit) => {
     draft(id, change);
     save.mutate({ id, change });
@@ -204,7 +220,14 @@ export default function JobsView() {
             </p>
           ) : (
             <div className={jobs.isPlaceholderData ? "opacity-60 transition-opacity" : undefined}>
-              <JobsTable rows={jobs.data?.rows ?? []} meta={meta.data} edits={edits} onSave={saveNow} onDraft={draft} />
+              <JobsTable
+                rows={jobs.data?.rows ?? []}
+                meta={meta.data}
+                edits={edits}
+                onSave={saveNow}
+                onDraft={draft}
+                onLabel={(id, value) => label.mutate({ id, value })}
+              />
             </div>
           )}
 

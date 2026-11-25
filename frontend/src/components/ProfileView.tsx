@@ -26,9 +26,11 @@ const EMPTY: FullProfile = {
   max_years_required: 2,
   needs_sponsorship: true,
   has_phd: false,
-  preferred_locations: ["remote"],
+  preferred_locations: [],
   role_weights: { ai: 1, software: 1, ml: 0.8, research: 0.5, data: 0.5, other: 0.3 },
   skills: {},
+  weights: {},
+  languages: [],
 };
 
 const input = "rounded border border-zinc-300 bg-transparent px-2 py-1 text-sm dark:border-zinc-700";
@@ -38,6 +40,7 @@ export default function ProfileView() {
   const state = useQuery({ queryKey: ["profile"], queryFn: api.profile });
   const [draft, setDraft] = useState<Profile | null>(null);
   const [locations, setLocations] = useState<string | null>(null);
+  const [languages, setLanguages] = useState<string | null>(null);
   const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -52,6 +55,7 @@ export default function ProfileView() {
     onSuccess: (fromResume) => {
       setDraft(fromResume);
       setLocations(null);
+        setLanguages(null);
       const n = Object.keys(fromResume.skills ?? {}).length;
       setNotice({
         ok: true,
@@ -69,6 +73,7 @@ export default function ProfileView() {
     onSuccess: (res) => {
       setDraft(null);
       setLocations(null);
+        setLanguages(null);
       setNotice({
         ok: true,
         text: `Saved. ${res.scored.toLocaleString()} jobs fit your profile, ${res.strong.toLocaleString()} of them score 70 or more. "Best match" on the Jobs page is updated.`,
@@ -122,6 +127,7 @@ export default function ProfileView() {
               onClick={() => {
                 setDraft(null);
                 setLocations(null);
+        setLanguages(null);
                 setNotice(null);
               }}
               className="text-sm text-zinc-500 underline hover:text-foreground"
@@ -165,13 +171,25 @@ export default function ProfileView() {
           </label>
         </div>
         <label className="block space-y-1 text-sm">
-          <span>Preferred locations (comma separated; these rank a little higher, the rest of the US still counts)</span>
+          <span>Preferred locations (comma separated; leave empty for anywhere in the US)</span>
           <input
             value={locations ?? profile.preferred_locations.join(", ")}
             className={`${input} w-full`}
             onChange={(e) => {
               setLocations(e.target.value);
               edit({ preferred_locations: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) });
+            }}
+          />
+        </label>
+        <label className="block space-y-1 text-sm">
+          <span>Languages you speak besides English (comma separated; jobs requiring any other language are hidden)</span>
+          <input
+            value={languages ?? profile.languages.join(", ")}
+            placeholder="e.g. Hindi, Spanish"
+            className={`${input} w-full`}
+            onChange={(e) => {
+              setLanguages(e.target.value);
+              edit({ languages: e.target.value.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) });
             }}
           />
         </label>

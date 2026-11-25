@@ -11,3 +11,9 @@ backend/config/profile.yaml
 # local backups (kept on disk, not in git)
 legacy/*.tar.gz
 legacy/frontend-before-next-upgrade/
+
+# Neon and other local env files (secrets)
+.env.*
+!.env.example
+**/.env.local
+.neon

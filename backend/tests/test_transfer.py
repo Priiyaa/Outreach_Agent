@@ -33,7 +33,7 @@ def test_copy_moves_every_table_and_verifies_counts(tmp_path, source):
     target = empty_target(tmp_path)
     seen = []
     copied = copy_database(source, target, lambda t, done, total: seen.append((t, done, total)))
-    assert copied == {"companies": 1, "fetch_log": 1, "jobs": 5, "llm_labels": 1, "job_matches": 0, "profiles": 0}
+    assert copied == {"companies": 1, "fetch_log": 1, "jobs": 5, "llm_labels": 1, "job_matches": 0, "profiles": 0, "watched_companies": 0, "company_tags": 0, "match_labels": 0}
     assert ("jobs", 5, 5) in seen
     dst = DB(target)
     assert dst.scalar("SELECT COUNT(*) FROM jobs") == 5

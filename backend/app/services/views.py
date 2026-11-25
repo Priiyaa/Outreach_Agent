@@ -6,6 +6,7 @@ import io
 from datetime import datetime, timedelta, timezone
 
 from ..db.repository import HIDDEN_DUPLICATE, SPONSORSHIP_VALUES, STATUS_VALUES
+from .watch import sync_watched
 
 STATUS_LABELS = {"new": "New", "saved": "Saved", "applied": "Applied", "skipped": "Skipped"}
 LABEL_TO_STATUS = {v: k for k, v in STATUS_LABELS.items()}
@@ -36,7 +37,12 @@ _SELECT = (
     "jobs.exp_reason, jobs.sponsorship, jobs.sponsorship_source, "
     "jobs.sponsorship_note, jobs.status, jobs.source, jobs.posted_at, jobs.first_seen, jobs.url, "
     "jobs.closed_at, jobs.company_key, jobs.cs_evidence AS cs_role_evidence, jobs.role_family, "
-    "m.score AS match_score, COALESCE(m.reasons, '') AS match_reasons "
+    "m.score AS match_score, COALESCE(m.reasons, '') AS match_reasons, "
+    "CASE WHEN EXISTS (SELECT 1 FROM watched_companies w WHERE w.company_key = jobs.company_key) "
+    "THEN 1 ELSE 0 END AS watched, "
+    "COALESCE((SELECT t.detail FROM company_tags t WHERE t.company_key = jobs.company_key AND t.tag = 'yc'), '') "
+    "AS yc_batch, "
+    "(SELECT l.label FROM match_labels l WHERE l.job_id = jobs.id AND l.profile = :profile) AS match_label "
     f"{_FROM}"
 )
 
@@ -54,6 +60,8 @@ def _build_where(
     profile: str = "",
     matches_only: bool = False,
     min_score: int = 0,
+    watched_only: bool = False,
+    yc_only: bool = False,
     **multi: list[str] | None,
 ) -> tuple[str, dict]:
     """The WHERE clause and its parameters for a set of filters. Any MULTI_FILTERS name may be passed as a list
@@ -88,6 +96,10 @@ def _build_where(
     if min_score:
         where.append("m.score >= :min_score")
         params["min_score"] = int(min_score)
+    if yc_only:
+        where.append("jobs.company_key IN (SELECT company_key FROM company_tags WHERE tag = 'yc')")
+    if watched_only:
+        where.append("jobs.company_key IN (SELECT company_key FROM watched_companies)")
     if since_days is not None:
         # by the date the company posted it (first_seen when the source gives none); compared as YYYY-MM-DD
         params["cutoff"] = ((now or datetime.now(timezone.utc)) - timedelta(days=since_days)).date().isoformat()
@@ -151,6 +163,8 @@ def apply_job_edits(db, edits: dict[str, dict]) -> int:
             cleaned[job_id] = out
     for job_id, out in cleaned.items():
         db.update_job_fields(job_id, **out)
+    applied = [job_id for job_id, out in cleaned.items() if out.get("status") == "applied"]
+    sync_watched(db, applied)  # keep checking the companies you applied to
     return len(cleaned)
 
 

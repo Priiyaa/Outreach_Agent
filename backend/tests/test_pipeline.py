@@ -68,6 +68,7 @@ def make_project(root):
     (root / "config" / "config.yaml").write_text(
         "db_path: data/t.db\nexport_dir: data/exports\n"
         "http:\n  timeout_s: 5\n  workers: 4\n  user_agent: test\n"
+        "retention:\n  days: 100000\n"  # the fixtures are dated; age-based cleanup is tested in test_storage
     )
     (root / "config" / "companies.yaml").write_text(
         "greenhouse:\n  - {name: Acme, slug: acme}\n  - {name: Ghost, slug: ghost}\n"
@@ -96,7 +97,7 @@ def test_cli_end_to_end(tmp_path):
         # re-running is idempotent
         assert "4 jobs fetched from 3/4 boards: 0 new, 0 closed" in run_cli("fetch")
 
-        # a posting disappears upstream -> marked closed, not deleted
+        # a posting disappears upstream -> marked closed, then removed (not saved or applied to)
         routes["/gh/acme/jobs"] = {"jobs": [GH["jobs"][0]]}
         assert "3 jobs fetched from 3/4 boards: 0 new, 1 closed" in run_cli("fetch")
 
@@ -107,13 +108,13 @@ def test_cli_end_to_end(tmp_path):
         assert sorted(r["title"] for r in rows) == ["Data Analyst", "ML Engineer"]
         assert {r["company"] for r in rows} == {"Acme", "Zed"}
 
-        assert "Wrote 4 jobs" in run_cli("export", "--include-closed")
+        assert "Wrote 3 jobs" in run_cli("export", "--include-closed")  # the closed one was removed
         assert {r["experience"] for r in rows} <= {"New grad", "Experienced", "Unclear"}
         assert "size" not in rows[0]
         assert all(r["sponsorship"] == "Unknown" for r in rows)
 
         stats = run_cli("stats")
-        assert "Open jobs: 3   Closed: 1" in stats
+        assert "Open jobs: 3   Closed: 0" in stats
         assert "failed: [greenhouse] ghost" in stats
 
         checked = run_cli("check", "--source", "lever")

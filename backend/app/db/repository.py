@@ -92,8 +92,13 @@ class DB:
 
     # ---- fetching -------------------------------------------------------------------------------
 
-    def record_board(self, source: str, board: str, jobs: list[Job], run_ts: str) -> tuple[int, int]:
-        """Upsert one board's (or list's) jobs. Returns (new, closed). Safe to call repeatedly."""
+    def record_board(self, source: str, board: str, jobs: list[Job], run_ts: str,
+                     seen: list[Job] | None = None) -> tuple[int, int]:
+        """Upsert one board's (or list's) jobs. Returns (new, closed). Safe to call repeatedly.
+        `seen`: everything the board listed, when `jobs` is only the part worth storing (services.storage). Stored
+        jobs it still lists stay open, even when they are no longer updated (a tracked job past the age limit);
+        stored jobs it no longer lists are closed. Defaults to `jobs`."""
+        seen = jobs if seen is None else seen
         unique = {j.id: j for j in jobs}
         with self.engine.begin() as conn:
             existing = {
@@ -118,10 +123,13 @@ class DB:
                         for j in unique.values()
                     ],
                 )
+            still_listed = [{"id": j.id, "ts": run_ts} for j in seen if j.id in existing and j.id not in unique]
+            if still_listed:
+                conn.execute(text("UPDATE jobs SET last_seen = :ts WHERE id = :id"), still_listed)
             closed = 0
             # Anything we didn't see this run has been taken down. An empty response is treated
             # as suspicious (could be a transient glitch) and never closes the whole board.
-            if unique:
+            if seen:
                 closed = conn.execute(
                     text(
                         "UPDATE jobs SET closed_at = :ts WHERE source = :source AND board = :board "
@@ -130,6 +138,36 @@ class DB:
                     {"ts": run_ts, "source": source, "board": board},
                 ).rowcount
         return new, closed
+
+    def set_match_label(self, profile: str, job_id: str, label: str | None, ts: str) -> None:
+        """Record "good" / "bad" for a ranked job, or clear it with None."""
+        self.execute("DELETE FROM match_labels WHERE profile = :p AND job_id = :j", {"p": profile, "j": job_id})
+        if label:
+            self.execute("INSERT INTO match_labels (profile, job_id, label, created_at) VALUES (:p, :j, :l, :ts)",
+                         {"p": profile, "j": job_id, "l": label, "ts": ts})
+
+    def match_label_counts(self, profile: str) -> dict[str, int]:
+        rows = self.query("SELECT label, COUNT(*) AS n FROM match_labels WHERE profile = :p GROUP BY label", p=profile)
+        counts = {"good": 0, "bad": 0}
+        counts.update({r["label"]: int(r["n"]) for r in rows})
+        return counts
+
+    def delete_where(self, condition: str, **params) -> int:
+        """Delete the jobs matching a WHERE condition on `jobs`, with their match scores. Returns jobs deleted."""
+        with self.engine.begin() as conn:
+            conn.execute(text(f"DELETE FROM job_matches WHERE job_id IN (SELECT id FROM jobs WHERE {condition})"),
+                         params)
+            return conn.execute(text(f"DELETE FROM jobs WHERE {condition}"), params).rowcount
+
+    def delete_jobs(self, ids: list[str], batch: int = 2000) -> int:
+        """Delete jobs and their match scores. Returns how many jobs were deleted."""
+        for i in range(0, len(ids), batch):
+            chunk = ids[i:i + batch]
+            names = ", ".join(f":id{n}" for n in range(len(chunk)))  # one statement per batch, not one per row
+            params = {f"id{n}": x for n, x in enumerate(chunk)}
+            self.execute(f"DELETE FROM job_matches WHERE job_id IN ({names})", params)
+            self.execute(f"DELETE FROM jobs WHERE id IN ({names})", params)
+        return len(ids)
 
     def log(self, run_ts: str, source: str, board: str, ok: bool, n_jobs: int, error: str | None) -> None:
         self.execute(
