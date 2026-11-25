@@ -20,3 +20,14 @@ it("shows the stage while running and refreshes jobs once results are ready, bef
   expect(screen.getByRole("button", { name: "Fetching…" })).toBeDisabled();
   expect(invalidate).toHaveBeenCalledWith({ queryKey: ["jobs"] });
 });
+
+it("never shows the fetch button when the host has fetching off, not even while that answer loads", async () => {
+  const meta = vi.fn(async () => ({ ok: true, status: 200, json: async () => ({ fetch_enabled: false }) }));
+  vi.stubGlobal("fetch", meta);
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  render(<QueryClientProvider client={client}><FetchControl /></QueryClientProvider>);
+  expect(screen.queryByRole("button")).toBeNull(); // first paint, before the API answers
+  await vi.waitFor(() => expect(meta).toHaveBeenCalled());
+  await new Promise((r) => setTimeout(r, 0));
+  expect(screen.queryByRole("button")).toBeNull();
+});

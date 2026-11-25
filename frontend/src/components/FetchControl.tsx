@@ -30,8 +30,9 @@ export default function FetchControl() {
     wasReady.current = running && ready;
   }, [running, ready, queryClient]);
 
-  // Hosts that sleep fetch on a schedule instead, and tell us so.
-  if (meta.data?.fetch_enabled === false) return null;
+  // Hosts that sleep fetch on a schedule instead, and tell us so. Hidden until the API says fetching is on, so the
+  // button doesn't flash up and vanish while that answer is loading.
+  if (meta.data?.fetch_enabled !== true) return null;
 
   return (
     <div className="flex items-center gap-3">
