@@ -43,7 +43,7 @@ def db(tmp_path):
 def seed(db, tmp_path):
     db.record_board("greenhouse", "acme", [
         job(1, "Software Engineer, New Grad"),
-        job(2, "Business Operations Analyst", "Build internal APIs and automate data pipelines."),
+        job(2, "Business Operations Analyst", "Build internal APIs in Python and SQL and automate data pipelines."),
         job(3, "Operations Analyst", "Coordinate vendor schedules and budgets."),
     ], "2026-10-01T00:00:00+00:00")
     classify_all(db, {"size": {}, "claude": {}}, tmp_path)
