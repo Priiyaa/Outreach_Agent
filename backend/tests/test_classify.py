@@ -83,3 +83,18 @@ def test_more_foreign_locations_are_caught_without_losing_us_namesakes():
         assert not is_us_location(loc), loc
     for loc in ["Manchester, NH", "Athens, GA", "Lima, OH", "San Francisco", "Remote, Global", "Home based - Worldwide"]:
         assert is_us_location(loc), loc
+
+
+def test_now_or_in_the_future_wording_means_no_sponsorship():
+    from app.services.classify import detect_sponsorship
+    no = [
+        "Applicants for employment in the US must have work authorization that does not now or in the future require "
+        "sponsorship of a visa for employment authorization in the United States.",  # Accenture
+        "Candidates must be authorized to work in the US without requiring sponsorship.",
+        "You must be legally authorized to work in the U.S. and not require employer sponsorship now or in the future.",
+        "Applicants must not now or in the future require visa sponsorship.",
+    ]
+    assert [detect_sponsorship(t) for t in no] == ["No"] * len(no)
+    # the bare application question says nothing either way
+    assert detect_sponsorship("Will you now or in the future require sponsorship for employment visa status?") is None
+    assert detect_sponsorship("We sponsor H-1B visas. Will you now or in the future require sponsorship?") == "Yes"

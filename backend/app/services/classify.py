@@ -162,7 +162,14 @@ _SPONSOR_NO = re.compile(
     r"|citizenship\s+is\s+required|\bu\.?s\.?\s+persons?\b|security\s+clearance"
     # export-control (ITAR) and citizens-only wording, e.g. SpaceX: "must be a (i) U.S. citizen or national, (ii) ..."
     r"|\bitar\b|restricted\s+to\s+(?:u\.?s\.?\s+)?citizens|citizens?\s+or\s+(?:lawful\s+)?permanent\s+residents?"
-    r"|currently\s+a\s+u\.?s\.?\s+citizen|\b(?:q|ts/sci|top\s+secret|secret)\s+clearance",
+    r"|currently\s+a\s+u\.?s\.?\s+citizen|\b(?:q|ts/sci|top\s+secret|secret)\s+clearance"
+    # Accenture and many others: "work authorization that does not now or in the future require sponsorship of a visa".
+    # Needs the "not": the plain question "Will you now or in the future require sponsorship?" says nothing either way.
+    r"|(?:not|n't)\s+(?:now\s+or\s+in\s+the\s+future|currently\s+or\s+in\s+the\s+future|now\s+or\s+later)?\s*"
+    r"require\s+(?:the\s+|any\s+)?(?:current\s+or\s+future\s+)?(?:employer\s+|company\s+|visa\s+|immigration\s+|employment\s+)?"
+    r"sponsorship"
+    r"|without\s+(?:now\s+or\s+in\s+the\s+future\s+)?requiring\s+(?:current\s+or\s+future\s+)?(?:visa\s+|immigration\s+|employer\s+)?"
+    r"sponsorship",
     re.I,
 )
 _SPONSOR_YES = re.compile(
