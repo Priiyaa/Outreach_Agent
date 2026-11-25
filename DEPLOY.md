@@ -11,12 +11,11 @@ Steps marked **YOU** need your accounts or secrets; everything else is already i
 
 ## 0. Put the code on GitHub (YOU)
 
-The project is not in git yet. `.gitignore` already keeps `.env`, `node_modules` and the local database out.
+The code is committed locally on `main`. `.gitignore` keeps `.env`, `node_modules`, your profile and the local
+database out. Create an empty GitHub repo (no README), then:
 
 ```bash
-git init && git add -A && git commit -m "Initial commit"
-# create an empty GitHub repo, then:
-git remote add origin git@github.com:<you>/outreach-agent.git && git push -u origin main
+git remote add origin https://github.com/<you>/outreach-agent.git && git push -u origin main
 ```
 A public repo gets free Actions minutes and shows up on your resume; nothing secret is in it.
 
@@ -42,12 +41,13 @@ python -m app.cli copy-db --to "$DATABASE_URL"          # copies the local SQLit
 `copy-db` refuses a database that already has rows, so running it twice cannot duplicate anything.
 The copy takes seconds.
 
-**Check the size.** The free databases hold about 500 MB. Job descriptions are 250 MB of text locally; Postgres
-compresses long text, so it should fit, but confirm:
+**Size.** The free databases hold about 500 MB. Run `python -m app.cli trim --vacuum` locally before copying: it
+clears descriptions the board never needs (closed, non-US and non-tech jobs; saved and applied jobs keep theirs).
+That took the local file from 800 MB to 449 MB, and every fetch stores descriptions under the same rule, so the
+database stays small. Check the hosted size after the copy:
 ```sql
 SELECT pg_size_pretty(pg_database_size(current_database()));
 ```
-If it is over about 400 MB, tell me and we will shrink what is stored.
 
 ## 3. API on Render (YOU)
 
