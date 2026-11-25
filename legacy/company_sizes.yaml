@@ -1,0 +1,142 @@
+# Known company sizes, so most of your companies are sized without guessing.
+#   small = under 200 employees      (shown as Startup/Small)
+#   mid   = 200 to 5,000 employees   (shown as Mid-size)
+#   big   = over 5,000 employees     (shown as Big)
+#
+# These are rough sizes from general knowledge, NOT verified, and several sit near a cutoff.
+# Companies not listed here are sized from their job text, then by Claude (if ANTHROPIC_API_KEY is set),
+# then default to Startup/Small. You can also change any company in the app's Companies tab; a size you set
+# there always wins over this file.
+
+big:
+  - Stripe
+  - Airbnb
+  - Databricks
+  - Twilio
+  - MongoDB
+  - Datadog
+  - DoorDash
+  - Spotify
+  - Deel
+  - Google
+  - Alphabet
+  - Amazon
+  - Amazon Web Services
+  - Microsoft
+  - Meta
+  - Meta Platforms
+  - Apple
+  - IBM
+  - Intel
+  - NVIDIA
+  - Oracle
+  - Salesforce
+  - Adobe
+  - Cisco
+  - Qualcomm
+  - Dell Technologies
+  - HP
+  - Netflix
+  - Uber
+  - PayPal
+  - Visa
+  - Mastercard
+  - JPMorgan Chase
+  - Goldman Sachs
+  - Morgan Stanley
+  - Bank of America
+  - Wells Fargo
+  - Citi
+  - Citigroup
+  - Capital One
+  - American Express
+  - Walmart
+  - Target
+  - Boeing
+  - Lockheed Martin
+  - RTX
+  - Raytheon
+  - Northrop Grumman
+  - General Dynamics
+  - SpaceX
+  - Tesla
+  - Deloitte
+  - Accenture
+  - PwC
+  - EY
+  - KPMG
+  - McKinsey & Company
+  - Booz Allen Hamilton
+  - Leidos
+  - Honeywell
+  - General Electric
+  - GE
+  - 3M
+  - Ford Motor
+  - General Motors
+  - UnitedHealth Group
+  - CVS Health
+  - Johnson & Johnson
+  - Pfizer
+  - Home Depot
+  - Verizon
+  - AT&T
+  - Comcast
+  - Disney
+  - Intuit
+  - ServiceNow
+  - Workday
+  - Snap
+  - Block
+  - Zillow
+  - Expedia
+  - eBay
+  - Wayfair
+
+mid:
+  - Cloudflare
+  - Discord
+  - Figma
+  - Dropbox
+  - Pinterest
+  - Reddit
+  - Robinhood
+  - Lyft
+  - Asana
+  - Coinbase
+  - Anthropic
+  - GitLab
+  - Elastic
+  - Instacart
+  - Maplebear
+  - Brex
+  - Gusto
+  - Affirm
+  - Samsara
+  - Scale AI
+  - Webflow
+  - Airtable
+  - Duolingo
+  - Remitly
+  - Smartsheet
+  - Outreach
+  - Sprout Social
+  - Tempus AI
+  - Palantir
+  - Plaid
+  - Mistral AI
+  - OpenAI
+  - Ramp
+  - Notion
+  - Supabase
+  - Vanta
+  - Cohere
+  - Retool
+  - Mercury
+  - Anyscale
+  - Roblox
+
+small:
+  - Linear
+  - Replit
+  - Modal

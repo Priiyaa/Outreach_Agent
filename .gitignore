@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.env
+backend/data/
+node_modules/
+.next/
+backend/config/profile.yaml
+
+# local backups (kept on disk, not in git)
+legacy/*.tar.gz
+legacy/frontend-before-next-upgrade/

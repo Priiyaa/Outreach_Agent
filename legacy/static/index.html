@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Job search</title>
+<style>
+:root{--bg:#fff;--fg:#1c1e21;--mut:#6b7280;--line:#e5e7eb;--acc:#2563eb;--card:#f8fafc}
+@media (prefers-color-scheme:dark){:root{--bg:#111418;--fg:#e6e8eb;--mut:#9aa3af;--line:#272c33;--acc:#60a5fa;--card:#181c22}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px system-ui,sans-serif;display:flex;height:100vh}
+aside{width:270px;border-right:1px solid var(--line);padding:14px;overflow:auto;flex:none}
+main{flex:1;min-width:0;display:flex;flex-direction:column;padding:14px}
+h1{font-size:20px;margin:0 0 10px}h3{font-size:12px;text-transform:uppercase;color:var(--mut);margin:16px 0 6px}
+fieldset{border:0;padding:0;margin:0 0 8px}legend{font-weight:600;margin-bottom:3px}
+label{display:block;margin:2px 0}input[type=text],input[type=number],select{width:100%;padding:5px;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:5px}
+button{padding:6px 12px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:5px;cursor:pointer}
+button.p{background:var(--acc);color:#fff;border-color:var(--acc)}button:disabled{opacity:.45;cursor:default}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.tabs button{border:0;border-bottom:2px solid transparent;background:none;border-radius:0}.tabs .on{border-color:var(--acc);color:var(--acc)}
+.stats{display:flex;gap:10px;margin-bottom:10px}.stat{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px 12px}
+.stat b{display:block;font-size:18px}.stat span{color:var(--mut);font-size:12px}
+.bar{display:flex;gap:8px;align-items:center;margin:8px 0}.grow{flex:1}
+.wrap{flex:1;overflow:auto;border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%}th{position:sticky;top:0;background:var(--card);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:4px 8px;border-bottom:1px solid var(--line);vertical-align:top}td select,td input{padding:3px}
+tr.dirty td{background:color-mix(in srgb,var(--acc) 10%,transparent)}.ev{color:var(--mut);font-size:12px;max-width:260px}
+a{color:var(--acc)}#msg{padding:6px 10px;border-radius:5px;margin-bottom:8px}.ok{background:#16a34a22}.err{background:#dc262622}
+pre{background:var(--card);padding:8px;max-height:160px;overflow:auto;font-size:12px}
+</style></head><body>
+<aside>
+  <h1>Job search</h1>
+  <button id="fetchBtn" class="p" style="width:100%">Fetch new jobs now</button>
+  <pre id="fetchOut" hidden></pre>
+  <h3>Filters</h3>
+  <fieldset id="f-experience"><legend>Experience</legend></fieldset>
+  <fieldset id="f-size"><legend>Company size</legend></fieldset>
+  <fieldset id="f-sponsorship"><legend>Sponsors visas?</legend></fieldset>
+  <fieldset id="f-status"><legend>Status</legend></fieldset>
+  <label><input type="checkbox" id="cs_only" checked> CS-related roles only</label>
+  <label><input type="checkbox" id="us_only" checked> US jobs only</label>
+  <label><input type="checkbox" id="internships"> Include internships</label>
+  <label><input type="checkbox" id="closed"> Include closed postings</label>
+  <h3>Search</h3>
+  <input type="text" id="search" placeholder="Title or company">
+  <input type="text" id="location" placeholder="Location: seattle, chicago, remote" style="margin-top:6px">
+  <label style="margin-top:6px">First seen in last N days (0 = any)</label><input type="number" id="since_days" min="0" value="0">
+</aside>
+<main>
+  <div class="tabs"><button class="on" data-tab="jobs">Jobs</button><button data-tab="companies">Companies</button></div>
+  <div id="msg" hidden></div>
+  <section id="jobs" style="display:flex;flex-direction:column;flex:1;min-height:0">
+    <div class="stats" id="stats"></div>
+    <div class="bar">
+      <button class="p" id="save" disabled>Save changes</button>
+      <a id="csv" href="#"><button>Download filtered CSV</button></a>
+      <span class="grow"></span>
+      <select id="bulkVal" style="width:auto"></select><button id="bulk">Set Sponsors? for all shown</button>
+    </div>
+    <div class="wrap"><table><thead><tr><th>Company</th><th>Title</th><th>Location</th><th>CS evidence</th><th>Experience</th><th>Size</th><th>Sponsors?</th><th>Sponsorship note</th><th>Status</th><th>Link</th><th>First seen</th></tr></thead><tbody id="rows"></tbody></table></div>
+  </section>
+  <section id="companies" hidden style="flex-direction:column;flex:1;min-height:0">
+    <div class="bar"><button class="p" id="csave" disabled>Save company sizes</button>
+      <label><input type="checkbox" id="guessed"> Only show defaults and guesses</label></div>
+    <div class="wrap"><table><thead><tr><th>Company</th><th>Size</th><th>Source</th><th>Employees</th><th>Open jobs</th></tr></thead><tbody id="crows"></tbody></table></div>
+  </section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let total=0,meta,jobs=[],edits={},cedits={},companies=[];
+const defaults={experience:['New grad','Experienced'],status:['new','saved','applied']};
+function flash(t,ok=true){const m=$('msg');m.textContent=t;m.className=ok?'ok':'err';m.hidden=false;setTimeout(()=>m.hidden=true,5000)}
+function opts(list,sel){return list.map(v=>{const [val,lab]=Array.isArray(v)?v:[v,v];return `<option value="${esc(val)}"${val===sel?' selected':''}>${esc(lab)}</option>`}).join('')}
+function checks(name,items,on){const f=$('f-'+name);items.forEach(v=>{const [val,lab]=Array.isArray(v)?v:[v,v];
+  const l=document.createElement('label');l.innerHTML=`<input type="checkbox" name="${name}" value="${esc(val)}"${on.includes(val)?' checked':''}> ${esc(lab)}`;f.append(l)})}
+function params(){const p=new URLSearchParams();
+  ['experience','size','sponsorship','status'].forEach(n=>document.querySelectorAll(`input[name=${n}]:checked`).forEach(c=>p.append(n,c.value)));
+  ['cs_only','us_only','internships','closed'].forEach(n=>p.set(n,$(n).checked?'1':'0'));
+  ['search','location','since_days'].forEach(n=>p.set(n,$(n).value));return p}
+let timer;function refresh(){clearTimeout(timer);timer=setTimeout(load,200)}
+async function load(){
+  const r=await fetch('/api/jobs?'+params());const d=await r.json();jobs=d.rows;total=d.stats.total;edits={};$('save').disabled=true;$('save').textContent='Save changes';
+  $('csv').href='/api/jobs.csv?'+params();
+  $('stats').innerHTML=[['Jobs shown',total],['New grad',d.stats.new_grad],['Sponsor: Yes',d.stats.sponsor_yes],['Not yet applied',d.stats.not_applied]]
+    .map(([l,n])=>`<div class="stat"><b>${n}</b><span>${l}</span></div>`).join('');
+  $('rows').innerHTML=jobs.map((j,i)=>`<tr data-i="${i}"><td>${esc(j.company)}</td><td>${esc(j.title)}</td><td>${esc(j.location||'-')}</td>
+    <td class="ev">${esc(j.cs_role_evidence)}</td><td>${esc(j.experience)}</td><td>${esc(j.size)}</td>
+    <td><select data-f="sponsorship">${opts(meta.sponsorship,j.sponsorship)}</select></td>
+    <td><input type="text" data-f="sponsorship_note" value="${esc(j.sponsorship_note)}"></td>
+    <td><select data-f="status">${opts(Object.entries(meta.status),j.status)}</select></td>
+    <td><a href="${esc(j.url)}" target="_blank" rel="noopener">open</a></td><td>${esc((j.first_seen||'').slice(0,10))}</td></tr>`).join('')
+    +(total>jobs.length?`<tr><td colspan=11>Showing the newest ${jobs.length} of ${total}. Narrow the filters or download the CSV for all.</td></tr>`:'');
+}
+$('rows').addEventListener('input',e=>{const f=e.target.dataset.f;if(!f)return;const tr=e.target.closest('tr'),j=jobs[tr.dataset.i];
+  (edits[j.id]??={})[f]=e.target.value;tr.classList.add('dirty');const n=Object.keys(edits).length;$('save').disabled=false;$('save').textContent=`Save changes (${n})`});
+$('save').onclick=async()=>{const r=await fetch('/api/jobs/edit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(edits)});
+  const d=await r.json();r.ok?flash(`Saved changes to ${d.saved} job(s).`):flash('Nothing saved: '+d.error,false);load()};
+$('bulk').onclick=async()=>{const v=$('bulkVal').value;if(!confirm(`Set Sponsors? to '${v}' for all ${total} matching jobs (not just the rows on screen)? This locks them as manual.`))return;
+  const r=await fetch('/api/jobs/bulk-sponsorship?'+params()+'&value='+encodeURIComponent(v),{method:'POST'});
+  r.ok?flash(`Set ${total} jobs to ${v}.`):flash('Failed',false);load()};
+async function loadCompanies(){companies=await (await fetch('/api/companies')).json();cedits={};$('csave').disabled=true;renderCompanies()}
+function renderCompanies(){const g=$('guessed').checked;
+  $('crows').innerHTML=companies.map((c,i)=>g&&!['default','unknown','claude','openings','unsized'].includes(c.size_source)?'':
+  `<tr data-i="${i}"><td>${esc(c.company)}</td><td><select>${opts(meta.size,c.size)}</select></td><td>${esc(c.size_source)}</td><td>${esc(c.employees??'')}</td><td>${c.open_jobs}</td></tr>`).join('')}
+$('guessed').onchange=renderCompanies;
+$('crows').addEventListener('input',e=>{const tr=e.target.closest('tr');cedits[companies[tr.dataset.i].key]={size:e.target.value};tr.classList.add('dirty');$('csave').disabled=false});
+$('csave').onclick=async()=>{const r=await fetch('/api/companies/edit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(cedits)});
+  const d=await r.json();r.ok?flash(`Saved size for ${d.saved} company(ies). Their jobs moved bucket.`):flash('Nothing saved: '+d.error,false);loadCompanies();load()};
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  ['jobs','companies'].forEach(t=>$(t).style.display=t===b.dataset.tab?'flex':'none');if(b.dataset.tab==='companies')loadCompanies()});
+$('fetchBtn').onclick=async()=>{const r=await fetch('/api/fetch',{method:'POST'});if(r.status===409)flash('Already running',false);$('fetchBtn').disabled=true;$('fetchBtn').textContent='Fetching… (a few minutes)';poll()};
+async function poll(){const s=await (await fetch('/api/fetch')).json();
+  if(s.running){setTimeout(poll,2000);return}
+  $('fetchBtn').disabled=false;$('fetchBtn').textContent='Fetch new jobs now';
+  if(s.output||s.error){$('fetchOut').hidden=false;$('fetchOut').textContent=(s.error?'ERROR: '+s.error+'\n':'')+s.output}
+  if(s.output||s.error)flash(s.error||'Fetch done.',!s.error);load()}
+document.querySelector('aside').addEventListener('input',e=>{if(e.target.id!=='fetchBtn')refresh()});
+(async()=>{meta=await (await fetch('/api/meta')).json();
+  checks('experience',meta.experience,defaults.experience);checks('size',meta.size,meta.size);
+  checks('sponsorship',meta.sponsorship,meta.sponsorship);checks('status',Object.entries(meta.status),defaults.status);
+  $('bulkVal').innerHTML=opts(meta.sponsorship);load();fetch('/api/fetch').then(r=>r.json()).then(s=>{if(s.running){$('fetchBtn').disabled=true;poll()}})})();
+</script></body></html>

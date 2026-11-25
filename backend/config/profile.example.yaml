@@ -1,0 +1,54 @@
+# Your profile for "Best match" ranking. Edit it, then run `python -m app.cli match` to re-score.
+# Copy to profile.yaml (which is not committed) and fill in your own details.
+id: me
+
+years_experience: 2          # full-time years; roles asking for more than max_years_required are hidden
+max_years_required: 3
+needs_sponsorship: true      # hides jobs that say they won't sponsor, need clearance or citizenship
+has_phd: false               # PhD-required roles are ranked lower when false
+
+# Where you'd most like to work. Anywhere in the US still counts; these just rank a little higher.
+preferred_locations: [chicago, illinois, ", il", remote]
+
+# How much you want each kind of role (0 to 1). Families are matched from the job title.
+role_weights:
+  ai: 1.0          # AI / agentic / LLM / GenAI / applied AI / forward deployed engineer
+  software: 1.0    # SWE, SDE, full-stack, backend, frontend, product/platform engineer
+  ml: 0.85         # ML engineer, applied scientist, MLOps
+  research: 0.55   # research engineer / scientist
+  data: 0.5        # data engineer / scientist, analytics engineer
+  other: 0.3       # devops, SRE, security, QA, embedded ...
+
+# Skills from your resume, weighted 1 (nice) to 3 (core). Names must match the vocabulary in app/services/match.py.
+skills:
+  python: 3
+  typescript: 3
+  javascript: 2
+  go: 2
+  c++: 1
+  sql: 2
+  react: 3
+  next.js: 2
+  svelte: 2
+  node.js: 2
+  fastapi: 2
+  rest apis: 2
+  microservices: 2
+  mongodb: 2
+  aws: 3
+  lambda: 1
+  docker: 2
+  ci/cd: 1
+  llm: 3
+  rag: 3
+  ai agents: 3
+  langchain: 2
+  bedrock: 2
+  prompt engineering: 2
+  vector search: 2
+  machine learning: 2
+  scikit-learn: 1
+  anomaly detection: 1
+  distributed systems: 1
+  testing: 1
+  full stack: 2

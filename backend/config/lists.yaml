@@ -1,0 +1,26 @@
+# Curated GitHub job lists. `url` must point at the raw file. Run `python -m src.main check` to confirm
+# each one still downloads and parses (list formats change without notice).
+#
+# These lists only carry title / company / location (no job descriptions), and everyone sees them,
+# so competition is high. They are most useful for spotting companies, which `discover` turns into
+# direct company boards. Jobright shows only the last 7 days, so its jobs expire from here quickly.
+
+simplify:
+  - name: Simplify New Grad
+    slug: simplify-new-grad
+    url: https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json
+
+jobright:
+  # The Business Analyst README format was verified; the others use the same template but are unverified.
+  - name: Jobright Business Analyst New Grad
+    slug: jobright-business-analyst
+    url: https://raw.githubusercontent.com/jobright-ai/2026-Business-Analyst-New-Grad/master/README.md
+  - name: Jobright Data Analysis New Grad
+    slug: jobright-data-analysis
+    url: https://raw.githubusercontent.com/jobright-ai/2026-Data-Analysis-New-Grad/master/README.md
+  - name: Jobright Software Engineer New Grad
+    slug: jobright-software-engineer
+    url: https://raw.githubusercontent.com/jobright-ai/2026-Software-Engineer-New-Grad/master/README.md
+  - name: Jobright Engineering New Grad
+    slug: jobright-engineering
+    url: https://raw.githubusercontent.com/jobright-ai/2026-Engineering-New-Grad/master/README.md
